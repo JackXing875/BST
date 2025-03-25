@@ -28,48 +28,87 @@ public:
         return root;
     }
 
-    void preOrderTraversal(TreeNode* root) 
+    vector<int> preOrderTraversal(TreeNode* root) 
     {
+        vector<int> res;
+
         if (root) 
         {
-            cout << root->val << " ";
-            preOrderTraversal(root->left);
-            preOrderTraversal(root->right);
+            res.push_back(root->val);
+
+            vector<int> left = preOrderTraversal(root->left);
+            res.insert(res.end(), left.begin(), left.end());
+
+            vector<int> right = preOrderTraversal(root->right);
+            res.insert(res.end(), right.begin(), right.end());
         }
+
+        return res;
     }
 
-    void inorderTraversal(TreeNode* root) 
+    vector<int> inorderTraversal(TreeNode* root) 
     {
+        vector<int> res;
+
         if (root) 
         {
-            inorderTraversal(root->left);
-            cout << root->val << " ";
-            inorderTraversal(root->right);
+            vector<int> left = inorderTraversal(root->left);
+            res.insert(res.end(), left.begin(), left.end());
+
+            res.push_back(root->val);
+
+            vector<int> right = inorderTraversal(root->right);
+            res.insert(res.end(), right.begin(), right.end());
         }
+
+        return res;
     }
 
-    void postOrderTraversal(TreeNode* root) 
+    vector<int> postOrderTraversal(TreeNode* root) 
     {
+        vector<int> res;
+
         if (root) 
         {
-            postOrderTraversal(root->left);
-            postOrderTraversal(root->right);
-            cout << root->val << " ";
+            vector<int> left = postOrderTraversal(root->left);
+            res.insert(res.end(), left.begin(), left.end());
+
+            vector<int> right = postOrderTraversal(root->right);
+            res.insert(res.end(), right.begin(), right.end());
+            
+            res.push_back(root->val);
         }
+
+        return res;
     }
 
-    void levelOrderTraversal(TreeNode* root) 
+    vector<vector<int>> levelOrderTraversal(TreeNode* root) 
     {
-        if (!root) return;
+        vector<vector<int>> res;
+
+        if (!root) return res;
+
         queue<TreeNode*> q;
         q.push(root);
+
         while (!q.empty()) 
         {
-            TreeNode* node = q.front();
-            q.pop();
-            cout << node->val << " ";
-            if (node->left) q.push(node->left);
-            if (node->right) q.push(node->right);
+            vector<int> level;
+            int levelSize = q.size();
+            
+            for(int i = 0; i < levelSize; i++) 
+            {
+                TreeNode* node = q.front();
+                q.pop();
+
+                level.push_back(node->val);
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+
+            res.push_back(level);
         }
+
+        return res;
     }
 };
